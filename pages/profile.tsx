@@ -14,10 +14,8 @@ export default function ProtectedPage(props: ProfileProps) {
   const { data: session, status } = useSession()
   const loading = status === "loading"
 
-  // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
 
-  // If no session exists, display access denied message
   if (!session) {
     return (
       <>
@@ -41,8 +39,12 @@ export default function ProtectedPage(props: ProfileProps) {
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const session = await getSession({ req })
   if (!session) {
-    res.statusCode = 403
-    return { props: { user: [] } }
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
   }
 
   const user = await prisma.user.findUnique({
