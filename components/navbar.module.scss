@@ -1,0 +1,10 @@
+.loading,
+.loaded {
+  opacity: 1;
+  transition: all 0.2s ease-in;
+}
+
+.loading {
+//   top: -2rem;
+  opacity: 0;
+}
