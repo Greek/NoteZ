@@ -18,6 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <h1>sup</h1>
           </PageLayout.Pane>
           <PageLayout.Content>
+            {/* @ts-ignore */}
             <Component {...pageProps} />
           </PageLayout.Content>
         </PageLayout>
