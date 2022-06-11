@@ -41,7 +41,7 @@ export default function Navbar() {
             <Button
               mr={30}
               href={`api/auth/signin/google`}
-              onClick={(e) => {
+              onClick={(e: KeyboardEvent | MouseEvent) => {
                 e.preventDefault()
                 signIn("google")
               }}
@@ -56,7 +56,6 @@ export default function Navbar() {
               <ActionMenu>
                 <ActionMenu.Anchor>
                   <Header.Item
-                    mr={0}
                     sx={{
                       borderWidth: 3,
                       borderColor: "gray",
