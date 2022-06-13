@@ -10,11 +10,13 @@ import {
   Header,
   Text,
 } from "@primer/react"
+import { useRouter } from "next/router"
 
 // The approach used in this component shows how to build a sign in and sign out
 // component that works on pages which support both client and server side
 // rendering, and avoids any flash incorrect content on initial page load.
 export default function Navbar() {
+  const router = useRouter()
   const { data: session, status } = useSession()
   const loading = status === "loading"
 
@@ -73,7 +75,10 @@ export default function Navbar() {
                 <ActionMenu.Overlay align="end">
                   <ActionList>
                     <ActionList.Item
-                      onSelect={(event) => console.log("New file")}
+                      onSelect={(event) => {
+                        event.preventDefault()
+                        router.push("profile")
+                      }}
                     >
                       User information
                     </ActionList.Item>

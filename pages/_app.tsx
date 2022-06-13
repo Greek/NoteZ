@@ -1,28 +1,38 @@
-import { SessionProvider } from "next-auth/react"
-import { PageLayout, ThemeProvider } from "@primer/react"
-import { BaseStyles } from "@primer/react"
+import { unstable_useWebVitalsReport } from "next/streaming"
+import { getSession, SessionProvider } from "next-auth/react"
+import { PageLayout, SSRProvider, ThemeProvider } from "@primer/react"
 
 import type { AppProps } from "next/app"
 import "./styles.scss"
 import Navbar from "../components/navbar"
+import { NextPageContext } from "next"
 
-// Use of the <SessionProvider> is mandatory to allow components that call
-// `useSession()` anywhere in your application to access the `session` object.
 export default function App({ Component, pageProps }: AppProps) {
+  unstable_useWebVitalsReport((data) => {
+    console.log(data)
+  })
+
   return (
-    <SessionProvider session={pageProps.session} refetchInterval={0}>
-      <ThemeProvider>
-        <Navbar />
-        <PageLayout>
-          <PageLayout.Pane position="start" divider="line">
-            <h1>sup</h1>
-          </PageLayout.Pane>
-          <PageLayout.Content>
-            {/* @ts-ignore */}
-            <Component {...pageProps} />
-          </PageLayout.Content>
-        </PageLayout>
-      </ThemeProvider>
-    </SessionProvider>
+    <ThemeProvider>
+      <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <SSRProvider>
+          <Navbar />
+          <PageLayout>
+            <PageLayout.Content>
+              {/* @ts-ignore */}
+              <Component {...pageProps} />
+            </PageLayout.Content>
+          </PageLayout>
+        </SSRProvider>
+      </SessionProvider>
+    </ThemeProvider>
   )
+}
+
+export const getServerSideProps = async (context: NextPageContext) => {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  }
 }
