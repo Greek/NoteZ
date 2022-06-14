@@ -1,4 +1,4 @@
-import Navbar from "./Navbar1"
+import Navbar from "./Navbar"
 import type { ReactChildren } from "react"
 
 interface Props {
