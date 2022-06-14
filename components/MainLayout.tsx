@@ -8,7 +8,7 @@ interface Props {
 export default function MainLayout({ children }: Props) {
   return (
     <>
-      <Navbar brandName={"NoteZ"} />
+      <Navbar brandName={"Notez"} />
       <main>{children}</main>
     </>
   )
