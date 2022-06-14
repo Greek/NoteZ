@@ -1,104 +1,91 @@
-import styles from "./navbar.module.scss"
-
 import Link from "next/link"
-import { signIn, signOut, useSession } from "next-auth/react"
-import {
-  ActionMenu,
-  ActionList,
-  Avatar,
-  Button,
-  Header,
-  Text,
-} from "@primer/react"
+import { signIn, useSession } from "next-auth/react"
+import { Button } from "@primer/react"
 import { useRouter } from "next/router"
+import { device } from "../constants/breakpoints"
 
-// The approach used in this component shows how to build a sign in and sign out
-// component that works on pages which support both client and server side
-// rendering, and avoids any flash incorrect content on initial page load.
-export default function Navbar() {
+import styled from "styled-components"
+import { AvatarDropdown } from "./AvatarDropdown"
+
+interface NavbarProps {
+  brandName: String
+  compact?: Boolean
+}
+
+export default function Navbar(props: NavbarProps) {
   const router = useRouter()
+
   const { data: session, status } = useSession()
   const loading = status === "loading"
 
   return (
-    <Header>
-      <noscript>
-        <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
-      </noscript>
-      <Header.Item full>
-        <Header.Link href="/">
-          <span>
-            <Text fontSize={19}>NoteZ</Text>
-          </span>
-        </Header.Link>
-      </Header.Item>
-
-      <span
-        className={`nojs-show ${
-          !session && loading ? styles.loading : styles.loaded
-        }`}
-      >
-        {!session && (
-          <>
+    <NavbarContainer>
+      <NavbarContent brandName={props.brandName} compact={props.compact}>
+        <NavbarStart>
+          <h3>
+            {session?.user?.name?.split(" ")[0]}' {props.brandName}
+          </h3>
+        </NavbarStart>
+        <NavbarEnd>
+          {!session && (
             <Button
-              mr={30}
-              href={`api/auth/signin/google`}
-              onClick={(e: KeyboardEvent | MouseEvent) => {
+              onClick={(e: MouseEvent | KeyboardEvent) => {
                 e.preventDefault()
                 signIn("google")
               }}
             >
-              Sign in with Google
+              Sign in
             </Button>
-          </>
-        )}
-        {session?.user && (
-          <>
-            {session.user.image && (
-              <ActionMenu>
-                <ActionMenu.Anchor>
-                  <Header.Item
-                    sx={{
-                      borderWidth: 3,
-                      borderColor: "gray",
-                    }}
-                  >
-                    <Avatar
-                      src={session.user.image}
-                      size={32}
-                      sx={{
-                        cursor: "pointer",
-                      }}
-                    />
-                  </Header.Item>
-                </ActionMenu.Anchor>
-                <ActionMenu.Overlay align="end">
-                  <ActionList>
-                    <ActionList.Item
-                      onSelect={(event) => {
-                        event.preventDefault()
-                        router.push("profile")
-                      }}
-                    >
-                      User information
-                    </ActionList.Item>
-                    <ActionList.Divider />
-                    <ActionList.Item
-                      onClick={(e) => {
-                        e.preventDefault()
-                        signOut()
-                      }}
-                      variant="danger"
-                    >
-                      Sign out
-                    </ActionList.Item>
-                  </ActionList>
-                </ActionMenu.Overlay>
-              </ActionMenu>
-            )}
-          </>
-        )}
-      </span>
-    </Header>
+          )}
+          {session && (
+            // <Button
+            //   onClick={(e: MouseEvent | KeyboardEvent) => {
+            //     e.preventDefault()
+            //     signOut()
+            //   }}
+            // >
+            //   Sign out
+            // </Button>
+            <AvatarDropdown compact={props.compact} />
+          )}
+        </NavbarEnd>
+      </NavbarContent>
+    </NavbarContainer>
   )
 }
+
+const NavbarContainer = styled.div`
+  position: relative;
+  left: 0px;
+  width: 100%;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  background-color: rgb(217, 217, 217, 0.5);
+`
+
+const NavbarContent = styled.div`
+  display: flex;
+  padding: 0 1.11rem;
+  align-items: center;
+  justify-content: space-between;
+
+  @media ${device.mobileS} {
+    height: 2rem;
+  }
+
+  @media ${device.tablet} {
+    height: ${(props: NavbarProps) => (props.compact ? "2rem" : "3rem")};
+  }
+`
+
+const NavbarStart = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`
+
+const NavbarEnd = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`

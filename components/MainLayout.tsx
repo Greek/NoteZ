@@ -1,14 +1,14 @@
-import Navbar from "./navbar"
+import Navbar from "./Navbar"
 import type { ReactChildren } from "react"
 
 interface Props {
   children: React.ReactNode
 }
 
-export default function Layout({ children }: Props) {
+export default function MainLayout({ children }: Props) {
   return (
     <>
-      <Navbar />
+      <Navbar brandName={"NoteZ"} />
       <main>{children}</main>
     </>
   )

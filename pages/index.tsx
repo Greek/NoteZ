@@ -1,16 +1,30 @@
+import { Button } from "@primer/react"
 import { NextPageContext } from "next"
-import { getSession, useSession } from "next-auth/react"
-import AccessDenied from "../components/access-denied"
-import LandingPage from "../components/landingpage"
-import navbarStyles from "../components/navbar.module.scss"
+import { getSession, signIn, useSession } from "next-auth/react"
+
+import MainLayout from "../components/MainLayout"
 
 export default function IndexPage() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
 
-  if (!session) return <LandingPage />
+  if (!session)
+    return (
+      <Button
+        onClick={(e: MouseEvent) => {
+          e.preventDefault()
+          signIn("google")
+        }}
+      >
+        Log in
+      </Button>
+    )
 
-  return <h1>What's Up.!</h1>
+  return (
+    <MainLayout>
+      <h1>What's Up.!</h1>
+    </MainLayout>
+  )
 }
 
 export const getServerSideProps = async (context: NextPageContext) => {

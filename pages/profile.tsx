@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { getSession, useSession } from "next-auth/react"
-import AccessDenied from "../components/access-denied"
 import { NextPageContext } from "next"
 
 export default function ProtectedPage() {
@@ -28,7 +27,7 @@ export default function ProtectedPage() {
   if (!session) {
     return (
       <>
-        <AccessDenied />
+        <h1>Hi</h1>
       </>
     )
   }

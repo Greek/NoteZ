@@ -1,11 +1,11 @@
 import { unstable_useWebVitalsReport } from "next/streaming"
 import { getSession, SessionProvider } from "next-auth/react"
-import { PageLayout, SSRProvider, ThemeProvider } from "@primer/react"
+import { SSRProvider, PageLayout, ThemeProvider } from "@primer/react"
 
-import type { AppProps } from "next/app"
-import "./styles.scss"
-import Navbar from "../components/navbar"
 import { NextPageContext } from "next"
+import type { AppProps } from "next/app"
+
+import "./styles.scss"
 
 export default function App({ Component, pageProps }: AppProps) {
   unstable_useWebVitalsReport((data) => {
@@ -16,13 +16,8 @@ export default function App({ Component, pageProps }: AppProps) {
     <ThemeProvider>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <SSRProvider>
-          <Navbar />
-          <PageLayout>
-            <PageLayout.Content>
-              {/* @ts-ignore */}
-              <Component {...pageProps} />
-            </PageLayout.Content>
-          </PageLayout>
+          {/* @ts-ignore */}
+          <Component {...pageProps} />
         </SSRProvider>
       </SessionProvider>
     </ThemeProvider>

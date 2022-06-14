@@ -10,7 +10,7 @@
   "homepage": "https://notez.apap04.com",
   "main": "",
   "scripts": {
-    "dev": "next",
+    "dev": "next --port $PORT",
     "build": "next build",
     "start": "next start",
     "types": "tsc --noEmit"
