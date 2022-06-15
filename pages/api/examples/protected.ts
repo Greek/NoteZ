@@ -12,7 +12,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
   } else {
     res.send({
-      error: "You must be signed in to view the protected content on this page.",
+      error:
+        "You must be signed in to view the protected content on this page.",
     })
   }
 }

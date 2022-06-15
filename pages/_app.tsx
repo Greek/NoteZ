@@ -5,15 +5,16 @@ import { SSRProvider, ThemeProvider, theme } from "@primer/react"
 import { NextPageContext } from "next"
 import type { AppProps } from "next/app"
 
-import deepmerge from 'deepmerge'
+import deepmerge from "deepmerge"
 
 import "./styles.scss"
 
 const customTheme = deepmerge(theme, {
   fonts: {
-    normal: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
-    mono: 'MonoLisa, monospace'
-  }
+    normal:
+      '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+    mono: "MonoLisa, monospace",
+  },
 })
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -22,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
   // })
 
   return (
-    <ThemeProvider theme={customTheme} >
+    <ThemeProvider theme={customTheme}>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <SSRProvider>
           {/* @ts-ignore */}

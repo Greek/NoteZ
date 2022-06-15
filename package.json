@@ -15,7 +15,7 @@
     "start": "next start",
     "postinstall": "prisma generate",
     "types": "tsc --noEmit",
-    "format": "prettier --write './**/*.@(js|jsx|ts|tsx)'",
+    "format": "prettier --write .",
     "format:check": "prettier --check './**/*.@(js|jsx|ts|tsx)'"
   },
   "author": "Andreas P. <me@apap04.com>",
