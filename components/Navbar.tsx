@@ -6,9 +6,11 @@ import { device } from "../constants/breakpoints"
 
 import styled from "styled-components"
 import { AvatarDropdown } from "./AvatarDropdown"
+import { COMPACTNESS } from "../constants/compactness"
 
 interface NavbarProps {
   brandName: String
+  noteTitle?: String
   compact?: Boolean
 }
 
@@ -22,9 +24,9 @@ export default function Navbar(props: NavbarProps) {
     <NavbarContainer>
       <NavbarContent brandName={props.brandName} compact={props.compact}>
         <NavbarStart>
-          <h3>
-            {session?.user?.name?.split(" ")[0]}' {props.brandName}
-          </h3>
+          <h4>
+            {props.brandName} / {props.noteTitle}
+          </h4>
         </NavbarStart>
         <NavbarEnd>
           {!session && (
@@ -37,17 +39,7 @@ export default function Navbar(props: NavbarProps) {
               Sign in
             </Button>
           )}
-          {session && (
-            // <Button
-            //   onClick={(e: MouseEvent | KeyboardEvent) => {
-            //     e.preventDefault()
-            //     signOut()
-            //   }}
-            // >
-            //   Sign out
-            // </Button>
-            <AvatarDropdown compact={props.compact} />
-          )}
+          {session && <AvatarDropdown compact={props.compact} />}
         </NavbarEnd>
       </NavbarContent>
     </NavbarContainer>
@@ -58,7 +50,7 @@ const NavbarContainer = styled.div`
   position: relative;
   left: 0px;
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.1rem;
   margin-bottom: 1rem;
   background-color: rgb(217, 217, 217, 0.5);
 `
@@ -70,11 +62,12 @@ const NavbarContent = styled.div`
   justify-content: space-between;
 
   @media ${device.mobileS} {
-    height: 2rem;
+    height: ${COMPACTNESS.COMPACT};
   }
 
   @media ${device.tablet} {
-    height: ${(props: NavbarProps) => (props.compact ? "2rem" : "3rem")};
+    height: ${(props: NavbarProps) =>
+      props.compact ? COMPACTNESS.COMPACT : COMPACTNESS.COMFORTABLE};
   }
 `
 
