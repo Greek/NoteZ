@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { getSession, useSession } from "next-auth/react"
-import { NextPageContext } from "next"
+import { GetStaticProps, NextPageContext } from "next"
+import prisma from "../lib/prisma"
+import { PrismaClient } from "@prisma/client"
 
 export default function ProtectedPage() {
   const { data: session, status } = useSession()
@@ -9,16 +11,16 @@ export default function ProtectedPage() {
 
   if (!session) return <h1>Hello world</h1>
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const res = await fetch("/api/examples/protected")
-//       const json = await res.json()
-//       if (json.content) {
-//         setContent(json.content)
-//       }
-//     }
-//     fetchData()
-//   }, [session])
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       const res = await fetch("/api/examples/protected")
+  //       const json = await res.json()
+  //       if (json.content) {
+  //         setContent(json.content)
+  //       }
+  //     }
+  //     fetchData()
+  //   }, [session])
 
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return null
@@ -35,19 +37,20 @@ export default function ProtectedPage() {
   // If session exists, display content
   return (
     <>
-      <h1>Protected Page</h1>
-      <p>
-        <strong>{content ?? "\u00a0"}</strong>
-      </p>
+      <h1>Your profile</h1>
     </>
   )
 }
 
-export const getServerSideProps = async (context: NextPageContext) => {
-    return {
-      props: {
-        session: await getSession(context),
-      },
-    }
-  }
+export const getServerSideProps = async (
+  context: NextPageContext,
+  params: any
+) => {
+  // const user = prisma.user.findUnique({
+  //   where: {
+  //     id: Number(1)
+  //   },
+  // })
+
   
+}
