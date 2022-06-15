@@ -1,11 +1,20 @@
 import { unstable_useWebVitalsReport } from "next/streaming"
 import { getSession, SessionProvider } from "next-auth/react"
-import { SSRProvider, PageLayout, ThemeProvider } from "@primer/react"
+import { SSRProvider, ThemeProvider, theme } from "@primer/react"
 
 import { NextPageContext } from "next"
 import type { AppProps } from "next/app"
 
+import deepmerge from 'deepmerge'
+
 import "./styles.scss"
+
+const customTheme = deepmerge(theme, {
+  fonts: {
+    normal: "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+    mono: 'MonoLisa, monospace'
+  }
+})
 
 export default function App({ Component, pageProps }: AppProps) {
   unstable_useWebVitalsReport((data) => {
@@ -13,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
   })
 
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={customTheme} >
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <SSRProvider>
           {/* @ts-ignore */}
