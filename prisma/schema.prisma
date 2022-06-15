@@ -17,8 +17,8 @@ model Note {
 }
 
 model User {
-    id         Int    @id @default(autoincrement())
+    id         Int     @id @default(autoincrement())
     email      String
-    given_name String
+    given_name String?
     notes      Note[]
 }
