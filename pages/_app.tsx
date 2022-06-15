@@ -17,9 +17,9 @@ const customTheme = deepmerge(theme, {
 })
 
 export default function App({ Component, pageProps }: AppProps) {
-  unstable_useWebVitalsReport((data) => {
-    console.log(data)
-  })
+  // unstable_useWebVitalsReport((data) => {
+  //   console.log(data)
+  // })
 
   return (
     <ThemeProvider theme={customTheme} >
