@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react"
 import { getSession, useSession } from "next-auth/react"
-import { GetServerSideProps, GetStaticProps, NextPageContext } from "next"
+import { GetServerSideProps } from "next"
 
 import prisma from "../lib/prisma"
 import MainLayout from "../components/MainLayout"
@@ -33,9 +32,7 @@ export default function ProtectedPage(props: ProfileProps) {
       <MainLayout>
         <h1>Your profile</h1>
 
-        {props.user.given_name
-          ? props.user.given_name
-          : "You don't have a name!"}
+        {!props.user.given_name && "You don't have a name!"}
       </MainLayout>
     </>
   )
