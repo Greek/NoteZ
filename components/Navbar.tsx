@@ -51,7 +51,7 @@ const NavbarContainer = styled.div`
   left: 0px;
   width: 100%;
   font-size: 0.1rem;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
   background-color: rgb(217, 217, 217, 0.5);
 `
 
