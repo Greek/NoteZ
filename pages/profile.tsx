@@ -16,21 +16,12 @@ export default function ProtectedPage(props: ProfileProps) {
 
   if (typeof window !== "undefined" && loading) return null
 
-  if (!session) {
-    return (
-      <>
-        <h1>Hi</h1>
-      </>
-    )
-  }
-
-  // If session exists, display content
   return (
     <>
       <MainLayout>
         <h1>Your profile</h1>
 
-        {!props.user.given_name && "You don't have a name!"}
+        {session?.user?.name}
       </MainLayout>
     </>
   )
@@ -41,27 +32,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/",
         permanent: false,
       },
     }
   }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: 1,
-    },
-    select: {
-      given_name: true,
-    },
-  })
-
-  if (!user)
-    return {
-      props: { user: null },
-    }
-
   return {
-    props: { user },
+    props: {},
   }
 }
