@@ -1,8 +1,10 @@
 import styled from "styled-components"
 
-import { Button } from "@primer/react"
+import { getSession, useSession } from "next-auth/react"
+import { GetServerSideProps } from "next"
 
 import { Box } from "../components/Box"
+import { Button } from "@primer/react"
 import { signIn } from "next-auth/react"
 
 export default function Login() {
@@ -22,6 +24,22 @@ export default function Login() {
       </CenteredPage>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getSession({ req })
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }
 
 export const CenteredPage = styled.div`
