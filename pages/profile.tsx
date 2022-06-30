@@ -18,11 +18,9 @@ export default function ProtectedPage(props: ProfileProps) {
 
   return (
     <>
-      <MainLayout>
-        <h1>Your profile</h1>
+      <h1>Your profile</h1>
 
-        {session?.user?.name}
-      </MainLayout>
+      {session?.user?.name}
     </>
   )
 }

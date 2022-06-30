@@ -8,6 +8,9 @@ import type { AppProps } from "next/app"
 import deepmerge from "deepmerge"
 
 import "./styles.scss"
+import useSWR from "swr"
+import MainLayout from "../components/MainLayout"
+import { fetcher } from "../lib/fetch"
 
 const customTheme = deepmerge(theme, {
   fonts: {
@@ -18,16 +21,21 @@ const customTheme = deepmerge(theme, {
 })
 
 export default function App({ Component, pageProps }: AppProps) {
-  // unstable_useWebVitalsReport((data) => {
-  //   console.log(data)
-  // })
+  const { data, error } = useSWR("/api/users/1", fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  })
+
+  const notes: Array<Note> = data?.notes
 
   return (
     <ThemeProvider theme={customTheme}>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <SSRProvider>
-          {/* @ts-ignore */}
-          <Component {...pageProps} />
+          <MainLayout notes={notes}>
+            {/* @ts-ignore */}
+            <Component {...pageProps} />
+          </MainLayout>
         </SSRProvider>
       </SessionProvider>
     </ThemeProvider>

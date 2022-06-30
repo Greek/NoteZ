@@ -1,10 +1,15 @@
 import styled from "styled-components"
 import React from "react"
 
-export default function Sidebar(props: React.ReactNode) {
+interface SidebarProps {
+  notes: Array<Note>
+  children: React.ReactNode
+}
+
+export default function Sidebar(props: any) {
   return (
     <>
-      <SidebarContainer></SidebarContainer>
+      <SidebarContainer>{props.notes}</SidebarContainer>
     </>
   )
 }

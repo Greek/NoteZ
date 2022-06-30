@@ -20,11 +20,7 @@ export default function IndexPage() {
       </Button>
     )
 
-  return (
-    <MainLayout>
-      <h1>What's Up.!</h1>
-    </MainLayout>
-  )
+  return <h1>What's Up.!</h1>
 }
 
 export const getServerSideProps = async (context: NextPageContext) => {
