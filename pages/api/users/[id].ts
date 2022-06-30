@@ -14,7 +14,9 @@ async function handleGET(userId: Number, res: NextResponse) {
     select: { id: true, given_name: true, notes: true },
   })
 
+  // @ts-ignore
   if (!user) return res.json({ error: "User not found" })
 
+  // @ts-ignore
   return res.json(user)
 }

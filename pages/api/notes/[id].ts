@@ -8,13 +8,15 @@ export default async function getUser(req: NextRequest, res: NextResponse) {
   return handleGET(id, res)
 }
 
-async function handleGET(userId: Number, res: any) {
+async function handleGET(userId: Number, res: NextResponse) {
   const note = await prisma.note.findUnique({
     where: { id: Number(userId) },
     select: { content: true },
   })
 
-  if (!note) return res.json({ error: "Not not found" })
-
-  return res.json(note)
+  // @ts-ignore
+  if (!note) return await res.json({ error: "Not not found" })
+  
+  // @ts-ignore
+  return await res.json(note)
 }

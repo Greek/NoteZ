@@ -1,9 +1,4 @@
-export interface Note {
-  id: Number
-  creator_id: Number
-  title: string
-  content: string
-}
+import { Note } from "@prisma/client"
 
 export interface UserData {
   id: Number

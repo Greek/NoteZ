@@ -1,3 +1,7 @@
+import { useRouter } from "next/router"
+import { Note } from "@prisma/client"
+import { useEffect, useRef, useState } from "react"
+
 import ReactMarkdown from "react-markdown"
 import styled from "styled-components"
 
@@ -5,9 +9,6 @@ import useSWR from "swr"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 import remarkEmoji from "remark-emoji"
-
-import { useRouter } from "next/router"
-import { useEffect, useRef, useState } from "react"
 import remarkHtml from "remark-html"
 
 /* @ts-ignore */
@@ -27,8 +28,8 @@ export default function Note(props: any) {
 
   // When the page changes, set the note content back to its original state.
   useEffect(() => {
-    setPreviewText(note?.content)
-    setDelayedPreviewText(note?.content)
+    setPreviewText(note?.content!)
+    setDelayedPreviewText(note?.content!)
 
     // @ts-ignore
     textAreaRef!.current!.value = note?.content
@@ -47,7 +48,7 @@ export default function Note(props: any) {
       <EditorContainer>
         <PreviewArea>
           <ReactMarkdown
-            children={delayedPreviewText ? delayedPreviewText : note?.content}
+            children={delayedPreviewText ? delayedPreviewText : note?.content!}
             remarkPlugins={[remarkGfm, remarkBreaks, remarkEmoji, remarkHtml]}
           />
         </PreviewArea>
