@@ -1,3 +1,5 @@
+import { Note } from "../lib/NoteZ"
+
 import styled from "styled-components"
 import React from "react"
 

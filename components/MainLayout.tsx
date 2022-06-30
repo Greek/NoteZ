@@ -1,3 +1,5 @@
+import { Note } from "../lib/NoteZ"
+
 import Link from "next/link"
 import styled from "styled-components"
 
