@@ -1,3 +1,5 @@
+import { Note } from "@prisma/client"
+import { fetcher } from "../lib/fetch"
 import { unstable_useWebVitalsReport } from "next/streaming"
 import { getSession, SessionProvider } from "next-auth/react"
 import { SSRProvider, ThemeProvider, theme } from "@primer/react"
@@ -10,7 +12,6 @@ import deepmerge from "deepmerge"
 import "./styles.scss"
 import useSWR from "swr"
 import MainLayout from "../components/MainLayout"
-import { fetcher } from "../lib/fetch"
 
 const customTheme = deepmerge(theme, {
   fonts: {

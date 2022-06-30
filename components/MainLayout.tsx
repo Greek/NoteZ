@@ -1,4 +1,4 @@
-import { Note } from "../lib/NoteZ"
+import { Note } from "@prisma/client"
 
 import Link from "next/link"
 import styled from "styled-components"
