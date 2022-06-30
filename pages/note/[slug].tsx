@@ -14,7 +14,7 @@ import remarkHtml from "remark-html"
 /* @ts-ignore */
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json())
 
-export default function Note(props: any) {
+export default function NotePage(props: any) {
   const router = useRouter()
   const { slug } = router.query
 
