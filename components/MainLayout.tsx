@@ -1,4 +1,6 @@
 import Link from "next/link"
+import styled from "styled-components"
+
 import Navbar from "./Navbar"
 import Sidebar from "./Sidebar"
 
@@ -24,7 +26,12 @@ export default function MainLayout(props: Props) {
           )
         })}
       />
-      <main>{props.children}</main>
+      <MainArea>{props.children}</MainArea>
     </>
   )
 }
+
+export const MainArea = styled.div`
+  display: flex;
+  flex-direction: column;
+`
