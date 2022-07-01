@@ -12,6 +12,7 @@ import remarkBreaks from "remark-breaks"
 import remarkEmoji from "remark-emoji"
 import remarkHtml from "remark-html"
 import remarkParse from "remark-parse"
+import { device } from "../../constants/breakpoints"
 
 /* @ts-ignore */
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json())
@@ -21,10 +22,12 @@ export default function NotePage(props: any) {
   const { slug } = router.query
 
   const { data, error } = useSWR(`/api/notes/${slug}`, fetcher)
+
+  if (error) return <h1>Note not found.</h1>
+
   const note: Note = data
 
   const textAreaRef = useRef(null)
-
   const [previewText, setPreviewText] = useState("")
   const [delayedPreviewText, setDelayedPreviewText] = useState("")
 
@@ -95,19 +98,33 @@ export const PreviewArea = styled.div`
   flex-direction: column;
   min-width: 50%;
   height: 95vh;
+  @media ${device.tablet} {
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-direction: row; */
+  }
 `
 
 export const EditorArea = styled.div`
   display: flex;
+  flex-direction: column;
   padding: 2em;
   min-width: 50%;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
     Liberation Mono, monospace;
-  flex-direction: column;
   background-color: rgba(217, 217, 217, 0.5);
+
+  @media ${device.tablet} {
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-direction: row; */
+  }
 `
 
 export const EditorTextArea = styled.textarea`
+  @media ${device.tablet} {
+    flex-direction: row;
+  }
   background-color: rgba(145, 145, 145, 0.5);
   height: 14rem;
   width: 35rem;
