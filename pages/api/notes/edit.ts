@@ -29,6 +29,9 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
       },
     })
 
+    if (!note)
+      return res.status(401).json({ error: "Cannot edit non-existent note." })
+
     return res.status(200).json(note)
   } catch (e) {
     console.log(e)
