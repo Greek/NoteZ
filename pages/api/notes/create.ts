@@ -27,9 +27,9 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
       .json({ error: "An authorization token is required." })
 
   const secret = process.env.NEXTAUTH_SECRET
-  const token = await getToken({req, secret})
+  const token = await getToken({ req, secret })
 
-  if (!token) return res.status(401).json({ error: "This token is invalid."})
+  if (!token) return res.status(401).json({ error: "This token is invalid." })
 
   const note = await prisma.note.create({
     data: {
@@ -40,5 +40,5 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     },
   })
 
-  return res.status(200).json({note: note, token: token})
+  return res.status(200).json(note)
 }
