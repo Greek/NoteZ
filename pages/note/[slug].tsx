@@ -22,9 +22,6 @@ export default function NotePage(props: any) {
   const { slug } = router.query
 
   const { data, error } = useSWR(`/api/notes/${slug}`, fetcher)
-
-  if (error) return <h1>Note not found.</h1>
-
   const note: Note = data
 
   const textAreaRef = useRef(null)
@@ -33,11 +30,16 @@ export default function NotePage(props: any) {
 
   // When the page changes, set the note content back to its original state.
   useEffect(() => {
-    setPreviewText(note?.content!)
-    setDelayedPreviewText(note?.content!)
+    if (note?.content == undefined) {
+      setPreviewText("# Note not found.")
+      // setDelayedPreviewText(note?.content!)
+    } else {
+      setPreviewText(note?.content!)
+      setDelayedPreviewText(note?.content!)
 
-    // @ts-ignore
-    textAreaRef!.current!.value = note?.content
+      // @ts-ignore
+      textAreaRef!.current!.value = note?.content
+    }
   }, [note])
 
   useEffect(() => {
@@ -127,7 +129,7 @@ export const EditorTextArea = styled.textarea`
   }
   background-color: rgba(145, 145, 145, 0.5);
   height: 14rem;
-  width: 35rem;
+  max-width: 35rem;
   resize: none;
   border: none;
   color: #303030;
