@@ -6,10 +6,12 @@ import ReactMarkdown from "react-markdown"
 import styled from "styled-components"
 
 import useSWR from "swr"
+
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 import remarkEmoji from "remark-emoji"
 import remarkHtml from "remark-html"
+import remarkParse from "remark-parse"
 
 /* @ts-ignore */
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json())
@@ -38,6 +40,18 @@ export default function NotePage(props: any) {
   useEffect(() => {
     const waitTime = setTimeout(() => {
       setDelayedPreviewText(previewText)
+      fetch("/api/notes/edit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          id: Number(slug),
+          // @ts-ignore
+          content: textAreaRef!.current!.value,
+        }),
+      })
     }, 250)
 
     return () => clearTimeout(waitTime)
@@ -49,7 +63,13 @@ export default function NotePage(props: any) {
         <PreviewArea>
           <ReactMarkdown
             children={delayedPreviewText ? delayedPreviewText : note?.content!}
-            remarkPlugins={[remarkGfm, remarkBreaks, remarkEmoji, remarkHtml]}
+            remarkPlugins={[
+              remarkGfm,
+              remarkBreaks,
+              remarkEmoji,
+              remarkHtml,
+              remarkParse,
+            ]}
           />
         </PreviewArea>
         <EditorArea>
