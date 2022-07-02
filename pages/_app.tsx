@@ -13,13 +13,13 @@ import "./styles.scss"
 import useSWR from "swr"
 import MainLayout from "../components/MainLayout"
 
-const customTheme = deepmerge(theme, {
-  fonts: {
-    normal:
-      '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
-    mono: "MonoLisa, monospace",
-  },
-})
+// const customTheme = deepmerge(null, {
+//   fonts: {
+//     normal:
+//       '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
+//     mono: "MonoLisa, monospace",
+//   },
+// })
 
 export default function App({ Component, pageProps }: AppProps) {
   const { data, error } = useSWR("/api/users/1", fetcher, {
@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const notes: Array<Note> = data?.notes
 
   return (
-    <ThemeProvider theme={customTheme}>
+    // <ThemeProvider theme={customTheme}>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <SSRProvider>
           <MainLayout notes={notes}>
@@ -39,7 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </MainLayout>
         </SSRProvider>
       </SessionProvider>
-    </ThemeProvider>
+    // </ThemeProvider>
   )
 }
 

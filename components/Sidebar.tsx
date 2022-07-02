@@ -18,11 +18,14 @@ export default function Sidebar(props: any) {
 
 export const SidebarContainer = styled.div`
   display: flex;
-  float: left;
+  position: relative;
+  flex-direction: column;
   padding-left: 1em;
   padding-top: 1em;
   margin-right: 2rem;
+  position: fixed;
+  float: left;
   width: 17rem;
-  min-height: 95vh;
+  height: 100vh;
   background-color: rgba(217, 217, 217, 0.5);
 `
