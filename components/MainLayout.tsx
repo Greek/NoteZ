@@ -14,21 +14,22 @@ interface Props {
 export default function MainLayout(props: Props) {
   return (
     <>
-      <Navbar brandName={"Notez"} />
-      <Sidebar
-        notes={props.notes?.map((note) => {
-          return (
-            <ul>
-              <li>
-                <Link key={`${note.id}`} href={"/note/" + note.id}>
-                  {note?.title}
-                </Link>
-              </li>
-            </ul>
-          )
-        })}
-      />
-      <MainArea>{props.children}</MainArea>
+      <MainArea>
+        <Sidebar
+          notes={props.notes?.map((note) => {
+            return (
+              <ul>
+                <li>
+                  <Link key={`${note.id}`} href={"/note/" + note.id}>
+                    {note?.title}
+                  </Link>
+                </li>
+              </ul>
+            )
+          })}
+        />
+        {props.children}
+      </MainArea>
     </>
   )
 }
