@@ -33,16 +33,12 @@ export default function NotePage(props: any) {
 
   // When the page changes, set the note content back to its original state.
   useEffect(() => {
-    if (note?.content == undefined) {
-      setPreviewText("# Note not found.")
-    } else {
-      setPreviewText(note?.content!)
-      setDelayedPreviewText(note?.content!)
+    setPreviewText(note?.content!)
+    setDelayedPreviewText(note?.content!)
 
-      // @ts-ignore
-      textAreaRef!.current!.value = note?.content
-    }
-  }, [note])
+    // @ts-ignore
+    textAreaRef!.current!.value = note?.content
+  }, [data])
 
   useEffect(() => {
     const waitTime = setTimeout(() => {
@@ -69,11 +65,9 @@ export default function NotePage(props: any) {
     <>
       <EditorContainer>
         <PreviewArea>
-          <PreviewAreaDetails>
-
-          </PreviewAreaDetails>
+          <PreviewAreaDetails></PreviewAreaDetails>
           <ReactMarkdown
-            children={delayedPreviewText ? delayedPreviewText : note?.content!}
+            children={delayedPreviewText}
             remarkPlugins={[
               remarkGfm,
               remarkBreaks,
@@ -114,9 +108,7 @@ export const PreviewArea = styled.div`
   }
 `
 
-export const PreviewAreaDetails = styled.div`
-  
-`
+export const PreviewAreaDetails = styled.div``
 
 export const EditorArea = styled.div`
   display: flex;
