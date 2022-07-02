@@ -21,7 +21,10 @@ export default function NotePage(props: any) {
   const router = useRouter()
   const { slug } = router.query
 
-  const { data, error } = useSWR(`/api/notes/${slug}`, fetcher)
+  const { data, error } = useSWR(`/api/notes/${slug}`, fetcher, {
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+  })
   const note: Note = data
 
   const textAreaRef = useRef(null)
@@ -32,7 +35,6 @@ export default function NotePage(props: any) {
   useEffect(() => {
     if (note?.content == undefined) {
       setPreviewText("# Note not found.")
-      // setDelayedPreviewText(note?.content!)
     } else {
       setPreviewText(note?.content!)
       setDelayedPreviewText(note?.content!)
@@ -45,19 +47,20 @@ export default function NotePage(props: any) {
   useEffect(() => {
     const waitTime = setTimeout(() => {
       setDelayedPreviewText(previewText)
-      fetch("/api/notes/edit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          id: Number(slug),
-          // @ts-ignore
-          content: textAreaRef!.current!.value,
-        }),
-      })
     }, 250)
+
+    fetch("/api/notes/edit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        id: Number(slug),
+        // @ts-ignore
+        content: textAreaRef!.current!.value,
+      }),
+    })
 
     return () => clearTimeout(waitTime)
   }, [previewText])
@@ -66,6 +69,9 @@ export default function NotePage(props: any) {
     <>
       <EditorContainer>
         <PreviewArea>
+          <PreviewAreaDetails>
+
+          </PreviewAreaDetails>
           <ReactMarkdown
             children={delayedPreviewText ? delayedPreviewText : note?.content!}
             remarkPlugins={[
@@ -100,37 +106,38 @@ export const PreviewArea = styled.div`
   flex-direction: column;
   min-width: 50%;
   height: 95vh;
-  @media ${device.tablet} {
+  padding-left: 18rem;
+  flex-grow: 1;
+  @media screen and (max-width: ${device.tablet}) {
     display: flex;
-    flex-wrap: wrap;
     /* flex-direction: row; */
   }
+`
+
+export const PreviewAreaDetails = styled.div`
+  
 `
 
 export const EditorArea = styled.div`
   display: flex;
   flex-direction: column;
+  position: sticky;
   padding: 2em;
-  min-width: 50%;
+  min-width: 36%;
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
     Liberation Mono, monospace;
   background-color: rgba(217, 217, 217, 0.5);
-
-  @media ${device.tablet} {
-    display: flex;
-    flex-wrap: wrap;
-    /* flex-direction: row; */
-  }
 `
 
 export const EditorTextArea = styled.textarea`
   @media ${device.tablet} {
     flex-direction: row;
   }
-  background-color: rgba(145, 145, 145, 0.5);
-  height: 14rem;
-  max-width: 35rem;
+  background-color: transparent;
+  height: 100%;
+  max-width: 100%;
   resize: none;
   border: none;
+  outline: none;
   color: #303030;
 `
