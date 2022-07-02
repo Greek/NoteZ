@@ -17,23 +17,19 @@ export default async function createNoteHandler(
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const { id, content } = req.body
+  const { id, content } = req.body
 
-    const note = await prisma.note.update({
-      where: {
-        id: id,
-      },
-      data: {
-        content: content,
-      },
-    })
+  const note = await prisma.note.update({
+    where: {
+      id: id,
+    },
+    data: {
+      content: content,
+    },
+  })
 
-    if (!note)
-      return res.status(401).json({ error: "Cannot edit non-existent note." })
+  if (!note)
+    return res.status(401).json({ error: "Cannot edit non-existent note." })
 
-    return res.status(200).json(note)
-  } catch (e) {
-    console.log(e)
-  }
+  return res.status(200).json(note)
 }
