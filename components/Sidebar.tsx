@@ -11,14 +11,16 @@ interface SidebarProps {
 export default function Sidebar(props: any) {
   return (
     <>
-      <SidebarContainer>{props.notes}</SidebarContainer>
+      <div>
+        <SidebarContainer>{props.notes}</SidebarContainer>
+      </div>
     </>
   )
 }
 
 export const SidebarContainer = styled.div`
   display: flex;
-  position: relative;
+  position: absolute;
   flex-direction: column;
   padding-left: 1em;
   padding-top: 1em;

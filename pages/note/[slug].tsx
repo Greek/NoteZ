@@ -100,7 +100,6 @@ export const PreviewArea = styled.div`
   flex-direction: column;
   min-width: 50%;
   height: 95vh;
-  padding-left: 18rem;
   flex-grow: 1;
   @media screen and (max-width: ${device.tablet}) {
     display: flex;
