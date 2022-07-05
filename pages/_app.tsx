@@ -12,6 +12,7 @@ import deepmerge from "deepmerge"
 import "./styles.scss"
 import useSWR from "swr"
 import MainLayout from "../components/MainLayout"
+import Link from "next/link"
 
 // const customTheme = deepmerge(null, {
 //   fonts: {
@@ -22,23 +23,16 @@ import MainLayout from "../components/MainLayout"
 // })
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { data, error } = useSWR("/api/users/1", fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  })
-
-  const notes: Array<Note> = data?.notes
-
   return (
     // <ThemeProvider theme={customTheme}>
-      <SessionProvider session={pageProps.session} refetchInterval={0}>
-        <SSRProvider>
-          <MainLayout notes={notes}>
-            {/* @ts-ignore */}
-            <Component {...pageProps} />
-          </MainLayout>
-        </SSRProvider>
-      </SessionProvider>
+    <SessionProvider session={pageProps.session} refetchInterval={0}>
+      <SSRProvider>
+        <MainLayout>
+          {/* @ts-ignore */}
+          <Component {...pageProps} />
+        </MainLayout>
+      </SSRProvider>
+    </SessionProvider>
     // </ThemeProvider>
   )
 }
