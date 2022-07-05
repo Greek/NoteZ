@@ -21,6 +21,7 @@
   "author": "Andreas P. <me@apap04.com>",
   "license": "ISC",
   "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.3",
     "@primer/css": "^20.2.2",
     "@primer/react": "^35.2.2",
     "@prisma/client": "^3.15.1",

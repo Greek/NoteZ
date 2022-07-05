@@ -10,8 +10,8 @@ export default async function getUser(req: NextRequest, res: NextResponse) {
 
 async function handleGET(userId: Number, res: NextResponse) {
   const user = await prisma.user.findUnique({
-    where: { id: Number(userId) },
-    select: { id: true, given_name: true, notes: true },
+    where: { id: String(userId) },
+    select: { id: true, name: true, notes: true },
   })
 
   // @ts-ignore
