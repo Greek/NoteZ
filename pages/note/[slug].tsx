@@ -29,22 +29,16 @@ export default function NotePage(props: any) {
 
   const textAreaRef = useRef(null)
   const [previewText, setPreviewText] = useState("")
-  const [delayedPreviewText, setDelayedPreviewText] = useState("")
 
   // When the page changes, set the note content back to its original state.
   useEffect(() => {
     setPreviewText(note?.content!)
-    setDelayedPreviewText(note?.content!)
 
     // @ts-ignore
     textAreaRef!.current!.value = note?.content
   }, [data])
 
-  useEffect(() => {
-    const waitTime = setTimeout(() => {
-      setDelayedPreviewText(previewText)
-    }, 250)
-
+  const performSaveAction = () => {
     fetch("/api/notes/edit", {
       method: "POST",
       headers: {
@@ -57,9 +51,7 @@ export default function NotePage(props: any) {
         content: textAreaRef!.current!.value,
       }),
     })
-
-    return () => clearTimeout(waitTime)
-  }, [previewText])
+  }
 
   return (
     <>
@@ -67,7 +59,7 @@ export default function NotePage(props: any) {
         <PreviewArea>
           <PreviewAreaDetails></PreviewAreaDetails>
           <ReactMarkdown
-            children={delayedPreviewText}
+            children={previewText}
             remarkPlugins={[
               remarkGfm,
               remarkBreaks,
@@ -83,6 +75,7 @@ export default function NotePage(props: any) {
             defaultValue={previewText}
             onChange={(e) => {
               setPreviewText(e.target.value)
+              performSaveAction()
             }}
           />
         </EditorArea>
