@@ -18,7 +18,7 @@ export default async function getNote(
 }
 
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.body
+  const { id } = req.query
   const headers = req.headers
 
   if (!headers["authorization"]) 
