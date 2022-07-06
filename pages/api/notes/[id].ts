@@ -21,7 +21,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query
   const headers = req.headers
 
-  if (!headers["authorization"]) 
+  if (!headers["authorization"])
     return res
       .status(401)
       .json({ error: "An authorization token is required." })
@@ -32,7 +32,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   if (!token) return res.status(401).json({ error: "This token is invalid." })
 
   const note = await prisma.note.findUnique({
-    where: { id: id },
+    where: { id: Number(id) },
     select: { content: true },
   })
 
