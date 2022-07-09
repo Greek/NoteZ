@@ -26,7 +26,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   if (!token)
     return res
       .status(401)
-      .json({ error: "A token is required to make this request." })
+      .json({ error: "Please provide a valid token." })
 
   const notezUser = await prisma.user.findUnique({
     where: { email: `${token.email}` },
