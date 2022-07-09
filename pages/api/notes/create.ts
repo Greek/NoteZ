@@ -19,21 +19,23 @@ export default async function createNoteHandler(
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const { content } = req.body
-  const headers = req.headers
-
-  if (!headers["authorization"])
-    return res
-      .status(401)
-      .json({ error: "An authorization token is required." })
 
   const secret = process.env.NEXTAUTH_SECRET
   const token = await getToken({ req, secret })
 
-  if (!token) return res.status(401).json({ error: "This token is invalid." })
+  if (!token)
+    return res
+      .status(401)
+      .json({ error: "A token is required to make this request." })
+
+  const notezUser = await prisma.user.findUnique({
+    where: { email: `${token.email}` },
+    select: { id: true, notes: true },
+  })
 
   const note = await prisma.note.create({
     data: {
-      creator_id: 1,
+      creator_id: `${notezUser?.id}`,
       content: content
         ? content
         : "This is content. You can edit this and write any markdown text!",

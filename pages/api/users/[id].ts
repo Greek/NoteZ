@@ -1,22 +1,29 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextApiRequest, NextApiResponse } from "next"
 import prisma from "../../../lib/prisma"
 
-export default async function getUser(req: NextRequest, res: NextResponse) {
-  // @ts-ignore
-  const id = req.query.id
+export default async function getUser(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { method } = req
 
-  return handleGET(id, res)
+  switch (method) {
+    case "GET":
+      return handleGET(req, res)
+    default:
+      return res.status(405).json({ error: "Only GET methods are allowed." })
+  }
 }
 
-async function handleGET(userId: Number, res: NextResponse) {
+async function handleGET(req: NextApiRequest, res: NextApiResponse) {
+  const userId = req.query.id
+
   const user = await prisma.user.findUnique({
     where: { id: String(userId) },
     select: { id: true, name: true, notes: true },
   })
 
-  // @ts-ignore
-  if (!user) return res.json({ error: "User not found" })
+  if (!user) return res.status(404).json({ error: "User not found" })
 
-  // @ts-ignore
-  return res.json(user)
+  return res.status(200).json(user)
 }

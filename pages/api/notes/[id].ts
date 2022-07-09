@@ -12,6 +12,8 @@ export default async function getNote(
   switch (method) {
     case "GET":
       return handleGET(req, res)
+    case "PATCH":
+      return handlePATCH(req, res)
     default:
       return res.status(405).json({ error: "Only GET methods are allowed." })
   }
@@ -19,26 +21,34 @@ export default async function getNote(
 
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query
-  const headers = req.headers
-
-  if (!headers["authorization"])
-    return res
-      .status(401)
-      .json({ error: "An authorization token is required." })
+  const noteId = Number(id)
 
   const secret = process.env.NEXTAUTH_SECRET
   const token = await getToken({ req, secret })
 
-  if (!token) return res.status(401).json({ error: "This token is invalid." })
+  if (!token)
+    return res
+      .status(401)
+      .json({ error: "A token is required to make this request." })
 
-  const note = await prisma.note.findUnique({
-    where: { id: Number(id) },
-    select: { content: true },
+  const notezUser = await prisma.user.findUnique({
+    where: { email: `${token.email}` },
+    select: { id: true, notes: true },
   })
 
-  // if note.
+  if (!Number.isInteger(noteId))
+    return res.status(404).json({ error: "Please provide a valid ID." })
+
+  const note = await prisma.note.findUnique({
+    where: { id: noteId },
+  })
 
   if (!note) return res.status(404).json({ error: "Note not found." })
+  if (!notezUser?.notes.find((note) => noteId == note?.id)) {
+    return res.status(404).json({ error: "This isn't your note... :think:" })
+  }
 
   return res.status(200).json(note)
 }
+
+async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {}
