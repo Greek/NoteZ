@@ -9,7 +9,7 @@ import prisma from "../../../lib/prisma"
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export default NextAuth({
-  adapter: PrismaAdapter(prisma),
+  // adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -18,7 +18,6 @@ export default NextAuth({
         params: {
           prompt: "consent",
           access_type: "offline",
-          scopes: "https://www.googleapis.com/auth/userinfo.email",
           response_type: "code",
         },
       },
@@ -27,6 +26,10 @@ export default NextAuth({
   theme: {
     colorScheme: "light",
   },
+  // secret: process.env.NEXTAUTH_SECRET,
+  // jwt: {
+  //   secret: process.env.NEXTAUTH_SECRET,
+  // },
   callbacks: {
     async jwt({ token }) {
       token.userRole = "admin"
