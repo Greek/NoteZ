@@ -1,9 +1,6 @@
 import { getSession, useSession } from "next-auth/react"
 import { GetServerSideProps } from "next"
 
-import prisma from "../lib/prisma"
-import MainLayout from "../components/MainLayout"
-
 interface ProfileProps {
   user: {
     given_name: String
@@ -30,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/login",
         permanent: false,
       },
     }

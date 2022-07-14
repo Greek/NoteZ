@@ -12,7 +12,25 @@ import remarkBreaks from "remark-breaks"
 import remarkEmoji from "remark-emoji"
 import remarkHtml from "remark-html"
 import remarkParse from "remark-parse"
-import { device } from "../../constants/breakpoints"
+import { device } from "../../../constants/breakpoints"
+import { GetServerSideProps } from "next"
+import { getSession } from "next-auth/react"
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await getSession({ req })
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
+}
 
 /* @ts-ignore */
 const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json())
