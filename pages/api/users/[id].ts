@@ -19,7 +19,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const userId = req.query.id
 
   const user = await prisma.user.findUnique({
-    where: { id: String(userId) },
+    where: { email: `${userId}` },
     select: { id: true, name: true, notes: true },
   })
 

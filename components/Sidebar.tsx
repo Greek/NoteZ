@@ -6,33 +6,47 @@ import { AvatarDropdown } from "./AvatarDropdown"
 import Link from "next/link"
 import styled from "styled-components"
 import useSWR from "swr"
+import Cookies from "js-cookie"
 
 export default function Sidebar() {
   const { data: session } = useSession()
 
-  const { data, error } = useSWR("/api/users/1", fetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  })
+  const { data, error } = useSWR(
+    [
+      `/api/users/${session?.user?.email}`,
+      Cookies.get("next-auth.session-token"),
+    ],
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  )
 
   const notes: Array<Note> = data?.notes
 
   const NoteDisplay = () => {
     if (session)
       return (
-        <ul>
-          {notes?.map((note) => {
-            return (
-              <li key={note?.id}>
-                <Link key={note?.id} href={"note/" + note.id}>
-                  {note?.title}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
+        <>
+          <div>
+            <AvatarDropdown />  Your Notes
+          </div>{" "}
+          <br />
+          <ul>
+            {notes?.map((note) => {
+              return (
+                <li key={note?.id}>
+                  <Link key={note?.id} href={"note/" + note.id}>
+                    {note?.title}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        </>
       )
-    else return <AvatarDropdown />
+    else return <></>
   }
 
   return (

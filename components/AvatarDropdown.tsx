@@ -23,7 +23,7 @@ export const AvatarDropdown = (props: AvatarProps) => {
           />
         </ActionMenu.Anchor>
 
-        <ActionMenu.Overlay align="end">
+        <ActionMenu.Overlay align="start">
           <ActionList>
             <ActionList.Item
               onClick={(e) => {

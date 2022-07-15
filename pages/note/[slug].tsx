@@ -12,19 +12,43 @@ import remarkBreaks from "remark-breaks"
 import remarkEmoji from "remark-emoji"
 import remarkHtml from "remark-html"
 import remarkParse from "remark-parse"
-import { device } from "../../constants/breakpoints"
+import Cookies from "js-cookie"
 
-/* @ts-ignore */
-const fetcher = (...args: any[]) => fetch(...args).then((res) => res.json())
+import { device } from "../../constants/breakpoints"
+import { fetcher } from "../../lib/fetch"
+import { getSession } from "next-auth/react"
+import { GetServerSideProps, NextPageContext } from "next"
+
+export const getServerSideProps = async (context: NextPageContext) => {
+  const session = await getSession(context)
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  }
+}
 
 export default function NotePage(props: any) {
   const router = useRouter()
   const { slug } = router.query
 
-  const { data, error } = useSWR(`/api/notes/${slug}`, fetcher, {
-    revalidateOnFocus: false,
-    revalidateIfStale: false,
-  })
+  const { data, error } = useSWR(
+    [`/api/notes/${slug}`, Cookies.get("next-auth.session-token")],
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+    }
+  )
   const note: Note = data
 
   const textAreaRef = useRef(null)
@@ -33,16 +57,18 @@ export default function NotePage(props: any) {
   // When the page changes, set the note content back to its original state.
   useEffect(() => {
     setPreviewText(note?.content!)
+    console.log(note)
 
     // @ts-ignore
     textAreaRef!.current!.value = note?.content
   }, [data])
 
   const performSaveAction = () => {
-    fetch("/api/notes/edit", {
-      method: "POST",
+    fetch(`/api/notes/${slug}`, {
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + Cookies.get("next-auth.session-token"),
       },
 
       body: JSON.stringify({
